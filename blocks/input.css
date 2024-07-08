@@ -1,0 +1,13 @@
+.input-error {
+  max-width: 358px;
+  width: 100%;
+  height: 1px;
+  background-color: #545454;
+  margin: auto;
+}
+
+@media screen and (max-width: 500px) {
+  .input-error {
+    max-width: 238px;
+  }
+}

@@ -1,0 +1,44 @@
+.header {
+  max-width: 882px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  margin: auto;
+}
+
+.header__logo {
+  max-width: 173px;
+  width: 100%;
+  margin-top: 45px;
+  align-items: flex-start;
+}
+
+.header__line {
+  background-color: #545454;
+  max-width: 882px;
+  width: 882px;
+  height: 1px;
+  margin: auto;
+  margin-top: 41px;
+}
+
+@media screen and (max-width: 500px) {
+  .header {
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .header__logo {
+    max-width: 126px;
+    width: 100%;
+    margin-top: 28px;
+  }
+
+  .header__line {
+    max-width: 320px;
+    margin-top: 84px;
+  }
+}

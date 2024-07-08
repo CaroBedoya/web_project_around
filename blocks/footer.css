@@ -1,0 +1,16 @@
+.footer {
+  max-width: 882px;
+  width: 100%;
+  color: #545454;
+  margin: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.footer__copyright {
+  font-size: 18px;
+  margin: 0;
+  margin-top: 67px;
+  margin-bottom: 66px;
+}

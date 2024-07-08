@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Proyecto interactivo sobre los Estados Unidos"
+    />
+    <title>Around The U.S.</title>
+    <meta name="keywords" content="fotos, destinos, Estados Unidos" />
+    <meta name="author" content="Carolina Bedoya" />
+    <link rel="stylesheet" href="./pages/index.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <img
+          src="./images/logo.svg"
+          alt="Logo Around The U.S."
+          class="header__logo"
+        />
+        <div class="header__line"></div>
+      </header>
+      <main class="content">
+        <section class="profile">
+          <div class="profile__avatar"></div>
+          <div class="profile__info">
+            <div class="profile__content">
+              <h1 class="profile__username">Jacques Cousteau</h1>
+              <img
+                src="./images/Edit_Button.svg"
+                alt="Boton para editar"
+                class="profile__edit-button"
+              />
+            </div>
+            <p class="profile__paragraph">Explorador</p>
+          </div>
+          <button class="profile__add-container">
+            <img
+              src="./images/Vector_add.svg"
+              alt="Boton para agregar contenido"
+              class="profile__add-button"
+            />
+          </button>
+        </section>
+        <div class="popup" id="popup-profile">
+          <form class="form popup__container" id="form-profile">
+            <img
+              src="./images/Close_Icon.svg"
+              alt="Icono para cerrar"
+              class="form__close-button"
+              id="close-profile-form"
+            />
+            <h2 class="form__title">Editar perfil</h2>
+            <input
+              type="text"
+              id="input-name"
+              class="form__input"
+              required
+              minlength="2"
+              maxlength="40"
+              placeholder="Nombre"
+            />
+            <span class="input-error input-name-error"></span>
+            <input
+              type="text"
+              id="input-about"
+              class="form__input"
+              required
+              minlength="2"
+              maxlength="200"
+              placeholder="Acerca de mí"
+            />
+            <span class="input-error input-about-error"></span>
+            <button class="form__button" type="submit" id="profile-form-button">
+              Guardar
+            </button>
+          </form>
+        </div>
+        <div class="popup" id="popup-add-card">
+          <form class="form popup__container" id="form-addcard" novalidate>
+            <img
+              src="./images/Close_Icon.svg"
+              alt="Boton para cerrar"
+              class="form__close-button"
+              id="close-addcard-form"
+            />
+            <h2 class="form__title">Nuevo Lugar</h2>
+            <input
+              type="text"
+              id="input-title"
+              class="form__input"
+              required
+              minlength="2"
+              maxlength="40"
+              placeholder="Título"
+            />
+            <span class="input-error input-title-error"></span>
+            <input
+              type="text"
+              id="input-url"
+              class="form__input"
+              required
+              minlength="2"
+              maxlength="200"
+              placeholder="Enlace a la imagen"
+            />
+            <span class="input-error input-url-error"></span>
+            <button
+              class="form__close-button"
+              type="submit"
+              id="addcard-form-button"
+            >
+              Crear
+            </button>
+          </form>
+        </div>
+        <section class="elements">
+          <div class="element">
+            <button class="element__photo-delete"></button>
+            <img
+              class="element__photo"
+              src="./images/Valledeyosemite.png"
+              alt="rio entre arboles"
+            />
+            <div class="element__info">
+              <h2 class="element__photo-name">Valle de Yosemite</h2>
+              <button class="element__photo-heart"></button>
+            </div>
+          </div>
+          <div class="element">
+            <button class="element__photo-delete"></button>
+            <img
+              class="element__photo"
+              src="./images/Lagolouise.png"
+              alt="lago y montaña nevada"
+            />
+            <div class="element__info">
+              <h2 class="element__photo-name">Lago Louise</h2>
+              <button class="element__photo-heart"></button>
+            </div>
+          </div>
+          <div class="element">
+            <button class="element__photo-delete"></button>
+            <img
+              class="element__photo"
+              src="./images/Montañascalvas.png"
+              alt="montañas al atardecer"
+            />
+            <div class="element__info">
+              <h2 class="element__photo-name">Montañas Calvas</h2>
+              <button class="element__photo-heart"></button>
+            </div>
+          </div>
+          <div class="element">
+            <button class="element__photo-delete"></button>
+            <img
+              class="element__photo"
+              src="./images/Latemar.png"
+              alt="montañas nevadas en una noche estrellada"
+            />
+            <div class="element__info">
+              <h2 class="element__photo-name">Latemar</h2>
+              <button class="element__photo-heart"></button>
+            </div>
+          </div>
+          <div class="element">
+            <button class="element__photo-delete"></button>
+            <img
+              class="element__photo"
+              src="./images/Vanoisnational.png"
+              alt="lago entre montañas"
+            />
+            <div class="element__info">
+              <h2 class="element__photo-name">Vanois National...</h2>
+              <button class="element__photo-heart"></button>
+            </div>
+          </div>
+          <div class="element">
+            <button class="element__photo-delete"></button>
+            <img
+              class="element__photo"
+              src="./images/Lagodibraies.png"
+              alt="lago con canoas y montañas atras"
+            />
+            <div class="element__info">
+              <h2 class="element__photo-name">Lago di Braies</h2>
+              <button class="element__photo-heart"></button>
+            </div>
+          </div>
+        </section>
+        <template class="template-card">
+          <div class="element">
+            <button class="element__photo-delete"></button>
+            <img class="element__photo" src="" alt="" />
+            <div class="element__info">
+              <h2 class="element__photo-name"></h2>
+              <button class="element__photo-heart"></button>
+            </div>
+          </div>
+        </template>
+      </main>
+      <footer class="footer">
+        <p class="footer__copyright">&#169; 2024 Carolina Bedoya</p>
+      </footer>
+    </div>
+    <script src="./scripts/index.js"></script>
+  </body>
+</html>
