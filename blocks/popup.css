@@ -31,6 +31,40 @@
   display: flex;
 }
 
+.popup__container_image {
+  width: 75vw;
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: transparent;
+}
+
+.popup__image {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+}
+
+.popup__image-title {
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+  color: white;
+  font-size: 16px;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+  z-index: 2;
+}
+
+.popup_image .form__close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  background-color: transparent;
+}
+
 @media screen and (max-width: 500px) {
   .popup__container {
     max-width: 282px;

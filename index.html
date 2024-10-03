@@ -107,14 +107,22 @@
               placeholder="Enlace a la imagen"
             />
             <span class="input-error input-url-error"></span>
-            <button
-              class="form__button"
-              type="submit"
-              id="addcard-form-button"
-            >
+            <button class="form__button" type="submit" id="addcard-form-button">
               Crear
             </button>
           </form>
+        </div>
+        <div class="popup popup_image" id="popup-image">
+          <div class="popup__container popup__container_image">
+            <img src="" alt="Imagen grande" class="popup__image" />
+            <p class="popup__image-title"></p>
+            <img
+              src="./images/Close_Icon.svg"
+              alt="Cerrar imagen"
+              class="form__close-button"
+              id="close-image-popup"
+            />
+          </div>
         </div>
         <section class="elements"></section>
         <template class="template-card">

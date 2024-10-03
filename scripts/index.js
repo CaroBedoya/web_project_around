@@ -13,6 +13,9 @@ const template = document.querySelector(".template-card");
 const cardArea = document.querySelector(".elements");
 const inputTitle = document.querySelector("#input-title");
 const inputLink = document.querySelector("#input-url");
+const popupImage = document.querySelector("#popup-image");
+const popupImageContent = popupImage.querySelector(".popup__image");
+const closeImageButton = document.querySelector("#close-image-popup");
 
 const initialCards = [
   {
@@ -100,4 +103,27 @@ formCards.addEventListener("submit", function (evt) {
   cardArea.prepend(cardToAdd);
   handleClosePopup(popupCards);
   formCards.reset();
+});
+
+function openImagePopup(src, alt, name) {
+  popupImageContent.src = src;
+  popupImageContent.alt = alt;
+  const popupTitle = document.querySelector(".popup__image-title");
+  popupTitle.textContent = name;
+  popupImage.classList.add("popup__show");
+}
+
+closeImageButton.addEventListener("click", function () {
+  handleClosePopup(popupImage);
+});
+
+cardArea.addEventListener("click", function (evt) {
+  const target = evt.target;
+  if (target.classList.contains("element__photo")) {
+    const cardElement = target.closest(".element");
+    const cardTitle = cardElement.querySelector(
+      ".element__photo-name"
+    ).textContent;
+    openImagePopup(target.src, target.alt, cardTitle);
+  }
 });
