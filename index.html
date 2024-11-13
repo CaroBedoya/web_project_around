@@ -11,6 +11,7 @@
     <meta name="keywords" content="fotos, destinos, Estados Unidos" />
     <meta name="author" content="Carolina Bedoya" />
     <link rel="stylesheet" href="./pages/index.css" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
   </head>
   <body>
     <div class="page">
@@ -45,7 +46,7 @@
           </button>
         </section>
         <div class="popup" id="popup-profile">
-          <form class="form popup__container" id="form-profile">
+          <form class="popup__form popup__container" id="form-profile">
             <img
               src="./images/Close_Icon.svg"
               alt="Icono para cerrar"
@@ -56,30 +57,34 @@
             <input
               type="text"
               id="input-name"
-              class="form__input"
+              class="popup__input"
               required
               minlength="2"
               maxlength="40"
               placeholder="Nombre"
             />
-            <span class="input-error input-name-error"></span>
+            <span id="input-name-error" class="input-error"></span>
             <input
               type="text"
               id="input-about"
-              class="form__input"
+              class="popup__input"
               required
               minlength="2"
               maxlength="200"
               placeholder="Acerca de mí"
             />
-            <span class="input-error input-about-error"></span>
+            <span id="input-about-error" class="input-error"></span>
             <button class="form__button" type="submit" id="profile-form-button">
               Guardar
             </button>
           </form>
         </div>
         <div class="popup" id="popup-add-card">
-          <form class="form popup__container" id="form-addcard" novalidate>
+          <form
+            class="popup__form popup__container"
+            id="form-addcard"
+            novalidate
+          >
             <img
               src="./images/Close_Icon.svg"
               alt="Boton para cerrar"
@@ -96,17 +101,15 @@
               maxlength="40"
               placeholder="Título"
             />
-            <span class="input-error input-title-error"></span>
+            <span id="input-title-error" class="input-error"></span>
             <input
-              type="text"
+              type="url"
               id="input-url"
               class="form__input"
               required
-              minlength="2"
-              maxlength="200"
               placeholder="Enlace a la imagen"
             />
-            <span class="input-error input-url-error"></span>
+            <span id="input-url-error" class="input-error"></span>
             <button class="form__button" type="submit" id="addcard-form-button">
               Crear
             </button>
@@ -140,6 +143,6 @@
         <p class="footer__copyright">&#169; 2024 Carolina Bedoya</p>
       </footer>
     </div>
-    <script src="./scripts/index.js"></script>
+    <script type="module" src="./scripts/index.js"></script>
   </body>
 </html>

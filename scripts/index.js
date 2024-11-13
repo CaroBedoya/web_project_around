@@ -1,3 +1,8 @@
+import Card from "./card.js";
+import FormValidator from "./FormValidator.js";
+import { openPopup, closePopup, addClosePopupListeners } from "./utils.js";
+
+// Selección de elementos del DOM
 const popupProfile = document.querySelector("#popup-profile");
 const popupCards = document.querySelector("#popup-add-card");
 const profileButton = document.querySelector(".profile__edit-button");
@@ -9,14 +14,16 @@ const inputAbout = document.querySelector("#input-about");
 const formProfile = document.querySelector("#form-profile");
 const formCards = document.querySelector("#form-addcard");
 const closeButtons = document.querySelectorAll(".form__close-button");
-const template = document.querySelector(".template-card");
+const templateSelector = ".template-card";
 const cardArea = document.querySelector(".elements");
 const inputTitle = document.querySelector("#input-title");
 const inputLink = document.querySelector("#input-url");
 const popupImage = document.querySelector("#popup-image");
 const popupImageContent = popupImage.querySelector(".popup__image");
+const popupImageTitle = popupImage.querySelector(".popup__image-title");
 const closeImageButton = document.querySelector("#close-image-popup");
 
+// Tarjetas iniciales
 const initialCards = [
   {
     name: "Valle de Yosemite",
@@ -44,86 +51,84 @@ const initialCards = [
   },
 ];
 
-function cardGenerator(name, link) {
-  const card = template.content.cloneNode(true).querySelector(".element");
-  const cardImage = card.querySelector(".element__photo");
-  const cardTitle = card.querySelector(".element__photo-name");
-  const btnDelete = card.querySelector(".element__photo-delete");
-  const btnLike = card.querySelector(".element__photo-heart");
-
-  btnLike.addEventListener("click", function () {
-    btnLike.classList.toggle("element__photo-heart_active");
-  });
-
-  btnDelete.addEventListener("click", function () {
-    card.remove();
-  });
-
-  cardImage.src = link;
-  cardTitle.textContent = name;
-  cardImage.alt = name;
-  return card;
-}
-
-initialCards.forEach(function (element) {
-  const newCard = cardGenerator(element.name, element.link);
-  cardArea.append(newCard);
+// Función para crear y agregar tarjeta
+initialCards.forEach((element) => {
+  const card = new Card(element, templateSelector);
+  cardArea.append(card.getCard());
 });
 
+// Configuración de validación
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".form__input, .popup__input",
+  submitButtonSelector: ".form__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
+const formProfileValidator = new FormValidator(validationConfig, formProfile);
+formProfileValidator.enableValidation();
+
+const formCardsValidator = new FormValidator(validationConfig, formCards);
+formCardsValidator.enableValidation();
+
+// Función para abrir el formulario de perfil y llenar los campos
 function handleOpenProfile() {
-  popupProfile.classList.add("popup__show");
+  inputName.value = profileName.textContent;
+  inputAbout.value = profileAbout.textContent;
+  openPopup(popupProfile);
 }
 
-function handleClosePopup(popup) {
-  popup.classList.remove("popup__show");
-}
-
+// Configura los eventos de los botones de cierre de los popups
 closeButtons.forEach((button) => {
-  button.addEventListener("click", function () {
-    handleClosePopup(button.closest(".popup"));
+  button.addEventListener("click", () => {
+    const popup = button.closest(".popup");
+    closePopup(popup);
   });
 });
 
+// Eventos para abrir los formularios
 profileButton.addEventListener("click", handleOpenProfile);
+openCardForm.addEventListener("click", () => openPopup(popupCards));
 
-openCardForm.addEventListener("click", function () {
-  popupCards.classList.add("popup__show");
+// Evento para enviar el formulario de "Nuevo Lugar"
+formCards.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+  const card = new Card(
+    { name: inputTitle.value, link: inputLink.value },
+    templateSelector
+  );
+  cardArea.prepend(card.getCard());
+  closePopup(popupCards);
+  formCards.reset();
 });
 
-formProfile.addEventListener("submit", function (evt) {
+// Evento para enviar el formulario de "Editar perfil"
+formProfile.addEventListener("submit", (evt) => {
   evt.preventDefault();
   profileName.textContent = inputName.value;
   profileAbout.textContent = inputAbout.value;
-  handleClosePopup(popupProfile);
+  closePopup(popupProfile);
 });
 
-formCards.addEventListener("submit", function (evt) {
-  evt.preventDefault();
-  const cardToAdd = cardGenerator(inputTitle.value, inputLink.value);
-  cardArea.prepend(cardToAdd);
-  handleClosePopup(popupCards);
-  formCards.reset();
+// Evento para abrir la imagen en tamaño grande
+cardArea.addEventListener("click", (evt) => {
+  const target = evt.target;
+  if (target.classList.contains("element__photo")) {
+    const cardTitle = target
+      .closest(".element")
+      .querySelector(".element__photo-name").textContent;
+    openImagePopup(target.src, target.alt, cardTitle);
+  }
 });
 
 function openImagePopup(src, alt, name) {
   popupImageContent.src = src;
   popupImageContent.alt = alt;
-  const popupTitle = document.querySelector(".popup__image-title");
-  popupTitle.textContent = name;
-  popupImage.classList.add("popup__show");
+  popupImageTitle.textContent = name;
+  openPopup(popupImage);
 }
 
-closeImageButton.addEventListener("click", function () {
-  handleClosePopup(popupImage);
-});
-
-cardArea.addEventListener("click", function (evt) {
-  const target = evt.target;
-  if (target.classList.contains("element__photo")) {
-    const cardElement = target.closest(".element");
-    const cardTitle = cardElement.querySelector(
-      ".element__photo-name"
-    ).textContent;
-    openImagePopup(target.src, target.alt, cardTitle);
-  }
-});
+// Cierra el popup de imagen al hacer clic en el botón de cerrar
+closeImageButton.addEventListener("click", () => closePopup(popupImage));

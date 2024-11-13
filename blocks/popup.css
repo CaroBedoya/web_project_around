@@ -7,7 +7,6 @@
   justify-content: center;
   align-items: center;
   z-index: 15;
-  margin: auto;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
@@ -16,18 +15,17 @@
 .popup__container {
   max-width: 430px;
   width: 100%;
-  height: 330px;
-  margin: auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
-  align-self: center;
   border-radius: 10px;
+  position: relative;
 }
 
-.popup__show {
+.popup_opened {
   display: flex;
 }
 
@@ -37,7 +35,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   background-color: transparent;
 }
 
@@ -54,10 +51,9 @@
   color: white;
   font-size: 16px;
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
-  z-index: 2;
 }
 
-.popup_image .form__close-button {
+.popup_image {
   position: absolute;
   top: 20px;
   right: 20px;

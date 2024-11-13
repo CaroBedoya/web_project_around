@@ -7,7 +7,7 @@ El web project around es el proyecto final del Sprint 5 en el cual tuvimos un pr
 Este proyecto se basa en la creación de un sitio web similar a una red social con un perfil y con imagenes en este caso de Estados Unidos;en el se permite al usuario interactuar y crear su propio perfil mediante un formulario y JavaScript, además se pueden agregar distintas imágenes a las ya establecidas. Por ahora se genera una pagina donde se puede practicar lo aprendido hasta ahora.
 
 Puedes darle un vistazo a mi proyecto aqui:
-https://github.com/CaroBedoya/web_project_around.git
+https://carobedoya.github.io/web_project_around/
 
 # Tecnologias y tecnicas utilizadas
 
