@@ -1,16 +1,16 @@
-// Función para abrir un popup
+// Abre un popup
 export function openPopup(popup) {
   popup.classList.add("popup_opened");
   document.addEventListener("keydown", handleEscClose);
 }
 
-// Función para cerrar un popup
+// Cierra un popup
 export function closePopup(popup) {
   popup.classList.remove("popup_opened");
   document.removeEventListener("keydown", handleEscClose);
 }
 
-// Función para agregar el evento de cierre a los popups
+// Añade listeners para cerrar popups
 export function addClosePopupListeners(popup) {
   popup.addEventListener("mousedown", (evt) => {
     if (
@@ -22,7 +22,7 @@ export function addClosePopupListeners(popup) {
   });
 }
 
-// Función para cerrar el popup al presionar "Escape"
+// Cierra el popup con la tecla "Escape"
 function handleEscClose(evt) {
   if (evt.key === "Escape") {
     const openPopup = document.querySelector(".popup_opened");

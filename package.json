@@ -1,0 +1,20 @@
+{
+  "name": "web_project_around",
+  "version": "1.0.0",
+  "description": "Proyecto web usando HTML, CSS y JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u0016https://carobedoya.github.io/web_project_around/"
+  },
+  "author": "Carolina Bedoya",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "3.6.0"
+  },
+  "devDependencies": {},
+  "keywords": []
+}
