@@ -1,6 +1,11 @@
+import Section from "./Section.js";
+import Popup from "./Popup.js";
+import PopupWithImage from "./PopupWithImage.js";
+import PopupWithForm from "./PopupWithForm.js";
+import UserInfo from "./UserInfo.js";
 import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
-import { openPopup, closePopup, addClosePopupListeners } from "./utils.js";
+import { enableValidation } from "./utils.js";
 
 // Selección de elementos del DOM
 const popupProfile = document.querySelector("#popup-profile");
@@ -51,84 +56,64 @@ const initialCards = [
   },
 ];
 
-// Función para crear y agregar tarjeta
 initialCards.forEach((element) => {
-  const card = new Card(element, templateSelector);
-  cardArea.append(card.getCard());
+  const card = new Card(element, templateSelector, openImagePopup);
+  cardArea.append(card.generateCard());
 });
 
-// Configuración de validación
-const validationConfig = {
-  formSelector: ".popup__form",
-  inputSelector: ".form__input, .popup__input",
-  submitButtonSelector: ".form__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-};
-
-const formProfileValidator = new FormValidator(validationConfig, formProfile);
-formProfileValidator.enableValidation();
-
-const formCardsValidator = new FormValidator(validationConfig, formCards);
-formCardsValidator.enableValidation();
-
-// Función para abrir el formulario de perfil y llenar los campos
-function handleOpenProfile() {
-  inputName.value = profileName.textContent;
-  inputAbout.value = profileAbout.textContent;
-  openPopup(popupProfile);
-}
-
-// Configura los eventos de los botones de cierre de los popups
+// Función para abrir y cerrar popups
 closeButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const popup = button.closest(".popup");
-    closePopup(popup);
+    button.closest(".popup").classList.remove("popup_opened");
   });
 });
 
-// Eventos para abrir los formularios
-profileButton.addEventListener("click", handleOpenProfile);
-openCardForm.addEventListener("click", () => openPopup(popupCards));
-
-// Evento para enviar el formulario de "Nuevo Lugar"
-formCards.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  const card = new Card(
-    { name: inputTitle.value, link: inputLink.value },
-    templateSelector
-  );
-  cardArea.prepend(card.getCard());
-  closePopup(popupCards);
-  formCards.reset();
-});
-
-// Evento para enviar el formulario de "Editar perfil"
-formProfile.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  profileName.textContent = inputName.value;
-  profileAbout.textContent = inputAbout.value;
-  closePopup(popupProfile);
-});
-
-// Evento para abrir la imagen en tamaño grande
-cardArea.addEventListener("click", (evt) => {
-  const target = evt.target;
-  if (target.classList.contains("element__photo")) {
-    const cardTitle = target
-      .closest(".element")
-      .querySelector(".element__photo-name").textContent;
-    openImagePopup(target.src, target.alt, cardTitle);
-  }
-});
-
-function openImagePopup(src, alt, name) {
-  popupImageContent.src = src;
-  popupImageContent.alt = alt;
-  popupImageTitle.textContent = name;
-  openPopup(popupImage);
+function openPopup(popup) {
+  popup.classList.add("popup_opened");
 }
 
-// Cierra el popup de imagen al hacer clic en el botón de cerrar
-closeImageButton.addEventListener("click", () => closePopup(popupImage));
+// Eventos para abrir los popups
+profileButton.addEventListener("click", () => {
+  const popupProfileInstance = new PopupWithForm(
+    "#popup-profile",
+    handleProfileFormSubmit
+  );
+  popupProfileInstance.open();
+});
+
+openCardForm.addEventListener("click", () => {
+  const popupAddCardInstance = new PopupWithForm(
+    "#popup-add-card",
+    handleAddCardFormSubmit
+  );
+  popupAddCardInstance.open();
+});
+
+closeImageButton.addEventListener("click", () => {
+  popupImage.classList.remove("popup_opened");
+});
+
+// Función para manejar la creación de una tarjeta
+function handleAddCardFormSubmit(event) {
+  event.preventDefault();
+  const card = new Card(inputTitle.value, inputLink.value, templateSelector);
+  cardArea.prepend(card.generateCard());
+  formCards.reset();
+  popupCards.classList.remove("popup_opened");
+}
+
+// Función para manejar el envío del formulario de perfil
+function handleProfileFormSubmit(event) {
+  event.preventDefault();
+  profileName.textContent = inputName.value;
+  profileAbout.textContent = inputAbout.value;
+  popupProfile.classList.remove("popup_opened");
+}
+
+// Función para abrir la imagen en el popup
+function openImagePopup(name, link) {
+  popupImageContent.src = link;
+  popupImageContent.alt = name;
+  popupImageTitle.textContent = name;
+  popupImage.classList.add("popup_opened");
+}

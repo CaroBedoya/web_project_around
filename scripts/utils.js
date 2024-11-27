@@ -1,33 +1,23 @@
-// Abre un popup
-export function openPopup(popup) {
-  popup.classList.add("popup_opened");
-  document.addEventListener("keydown", handleEscClose);
-}
+// utils.js
 
-// Cierra un popup
-export function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-  document.removeEventListener("keydown", handleEscClose);
-}
-
-// Añade listeners para cerrar popups
-export function addClosePopupListeners(popup) {
-  popup.addEventListener("mousedown", (evt) => {
-    if (
-      evt.target.classList.contains("popup") ||
-      evt.target.classList.contains("form__close-button")
-    ) {
-      closePopup(popup);
-    }
+// Función de validación (puedes personalizarla según tu necesidad)
+export function enableValidation(config) {
+  const formElements = document.querySelectorAll(config.formSelector);
+  formElements.forEach((form) => {
+    const inputElements = form.querySelectorAll(config.inputSelector);
+    inputElements.forEach((input) => {
+      input.addEventListener("input", () => validateInput(input, config));
+    });
   });
 }
 
-// Cierra el popup con la tecla "Escape"
-function handleEscClose(evt) {
-  if (evt.key === "Escape") {
-    const openPopup = document.querySelector(".popup_opened");
-    if (openPopup) {
-      closePopup(openPopup);
-    }
+function validateInput(input, config) {
+  const errorElement = document.querySelector(`#${input.id}-error`);
+  if (input.validity.valid) {
+    errorElement.textContent = "";
+    input.classList.remove(config.inputErrorClass);
+  } else {
+    errorElement.textContent = input.validationMessage;
+    input.classList.add(config.inputErrorClass);
   }
 }
