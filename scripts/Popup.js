@@ -6,12 +6,12 @@ class Popup {
 
   open() {
     this._popup.classList.add("popup_opened");
-    this.setEventListeners();
+    document.addEventListener("keydown", this._handleEscClose); // Agregar el event listener solo al abrir
   }
 
   close() {
     this._popup.classList.remove("popup_opened");
-    document.removeEventListener("keydown", this._handleEscClose);
+    document.removeEventListener("keydown", this._handleEscClose); // Remover el event listener al cerrar
   }
 
   _handleEscClose(evt) {
@@ -21,15 +21,21 @@ class Popup {
   }
 
   setEventListeners() {
-    this._popup
-      .querySelector(".popup__close")
-      .addEventListener("click", () => this.close());
+    const closeButton = this._popup.querySelector(".form__close-button");
+
+    if (closeButton) {
+      closeButton.addEventListener("click", () => this.close());
+    } else {
+      console.error(
+        `No se encontró el botón de cierre con la clase .form__close-button en el popup: ${this._popup.id}`
+      );
+    }
+
     this._popup.addEventListener("click", (evt) => {
       if (evt.target === this._popup) {
         this.close();
       }
     });
-    document.addEventListener("keydown", this._handleEscClose);
   }
 }
 

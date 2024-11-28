@@ -56,6 +56,7 @@ const initialCards = [
   },
 ];
 
+// Crear las tarjetas iniciales
 initialCards.forEach((element) => {
   const card = new Card(element, templateSelector, openImagePopup);
   cardArea.append(card.generateCard());
@@ -64,10 +65,12 @@ initialCards.forEach((element) => {
 // Función para abrir y cerrar popups
 closeButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    button.closest(".popup").classList.remove("popup_opened");
+    const popup = button.closest(".popup");
+    popup.classList.remove("popup_opened");
   });
 });
 
+// Función para abrir popups
 function openPopup(popup) {
   popup.classList.add("popup_opened");
 }
@@ -115,5 +118,5 @@ function openImagePopup(name, link) {
   popupImageContent.src = link;
   popupImageContent.alt = name;
   popupImageTitle.textContent = name;
-  popupImage.classList.add("popup_opened");
+  openPopup(popupImage);
 }

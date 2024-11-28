@@ -30,16 +30,21 @@ export default class Card {
 
   // Función para agregar los event listeners
   _setEventListeners() {
+    // Al hacer clic en la imagen, abrir el popup
     this._element
       .querySelector(".element__photo")
       .addEventListener("click", () => {
-        this._openImagePopup(this._link, this._name);
+        this._openImagePopup(this._name, this._link); // Pasar los datos correctamente
       });
+
+    // Evento para el corazón (como una acción adicional)
     this._element
       .querySelector(".element__photo-heart")
       .addEventListener("click", (event) => {
         event.target.classList.toggle("element__photo-heart_active");
       });
+
+    // Evento para eliminar la tarjeta
     this._element
       .querySelector(".element__photo-delete")
       .addEventListener("click", () => {
