@@ -15,7 +15,7 @@
   border-radius: 50%;
   align-self: flex-start;
   margin: 0;
-  background-image: url(../images/avatar.png);
+  background-image: url("../src/images/avatar.png");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -50,12 +50,12 @@
 }
 
 .profile__edit-button {
-  max-width: 24px;
-  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
   cursor: pointer;
-  margin: auto;
-  align-self: center;
 }
+
 
 .profile__edit-button:hover {
   opacity: 0.6;

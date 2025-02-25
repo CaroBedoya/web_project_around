@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Proyecto interactivo sobre los Estados Unidos"
+    />
+    <title>Around The U.S.</title>
+    <meta name="keywords" content="fotos, destinos, Estados Unidos" />
+    <meta name="author" content="Carolina Bedoya" />
+    <link rel="stylesheet" href="../pages/index.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <img
+          src="../src/images/logo.svg"
+          alt="Logo Around The U.S."
+          class="header__logo"
+        />
+        <div class="header__line"></div>
+      </header>
+      <main class="content">
+        <section class="profile">
+          <div class="profile__avatar"></div>
+          <div class="profile__info">
+            <div class="profile__content">
+              <h1 class="profile__username">Jacques Cousteau</h1>
+              <button class="profile__edit-button">
+                <img
+                  src="../src/images/Edit_Button.svg"
+                  alt="Boton para editar"
+                  class="profile__edit-button"
+                />
+              </button>
+            </div>
+            <p class="profile__paragraph">Explorador</p>
+          </div>
+          <button class="profile__add-container">
+            <img
+              src="../src/images/Vector_add.svg"
+              alt="Boton para agregar contenido"
+              class="profile__add-button"
+            />
+          </button>
+        </section>
+        <div class="popup" id="popup-profile">
+          <div class="popup__container">
+            <img
+              src="../src/images/Close_Icon.svg"
+              alt="Icono para cerrar"
+              class="popup__close-button"
+              id="close-profile-form"
+            />
+            <form class="popup__form" id="form-profile">
+              <h2 class="popup__title">Editar perfil</h2>
+              <input
+                type="text"
+                id="input-name"
+                class="popup__input"
+                required
+                minlength="2"
+                maxlength="40"
+                placeholder="Nombre"
+              />
+              <span id="input-name-error" class="input-error"></span>
+              <input
+                type="text"
+                id="input-about"
+                class="popup__input"
+                required
+                minlength="2"
+                maxlength="200"
+                placeholder="Acerca de mí"
+              />
+              <span id="input-about-error" class="input-error"></span>
+              <button
+                class="popup__button"
+                type="submit"
+                id="profile-form-button"
+              >
+                Guardar
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="popup" id="popup-add-card">
+          <div class="popup__container">
+            <img
+              src="../src/images/Close_Icon.svg"
+              alt="Icono para cerrar"
+              class="popup__close-button"
+              id="close-addcard-form"
+            />
+            <form class="popup__form" id="form-addcard" novalidate>
+              <h2 class="popup__title">Nuevo Lugar</h2>
+              <input
+                type="text"
+                id="input-title"
+                class="popup__input"
+                required
+                minlength="2"
+                maxlength="40"
+                placeholder="Título"
+              />
+              <span id="input-title-error" class="input-error"></span>
+              <input
+                type="url"
+                id="input-url"
+                class="popup__input"
+                required
+                placeholder="Enlace a la imagen"
+              />
+              <span id="input-url-error" class="input-error"></span>
+              <button
+                class="popup__button"
+                type="submit"
+                id="addcard-form-button"
+              >
+                Crear
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="popup popup_image" id="popup-image">
+          <div class="popup__container popup__container_image">
+            <img
+              src="../src/images/Latemar.png"
+              alt="Imagen de ejemplo"
+              class="popup__image"
+            />
+            <p class="popup__image-title"></p>
+            <img
+              src="../src/images/Close_Icon.svg"
+              alt="Cerrar imagen"
+              class="popup__close-button"
+              id="close-image-popup"
+            />
+          </div>
+        </div>
+        <div class="popup" id="popup-confirm">
+          <div class="popup__container">
+            <h2 class="popup__title">¿Estás seguro?</h2>
+            <button class="popup__button popup__button_confirm" type="button">
+              Sí
+            </button>
+            <button class="popup__button popup__button_cancel" type="button">
+              No
+            </button>
+            <img
+              src="../src/images/Close_Icon.svg"
+              alt="Cerrar popup"
+              class="popup__close-button"
+            />
+          </div>
+        </div>
+        <section class="elements"></section>
+        <template class="template-card">
+          <div class="element">
+            <button class="element__photo-delete"></button>
+            <img
+              class="element__photo"
+              src="../src/images/Latemar.png"
+              alt="Imagen de ejemplo"
+            />
+            <div class="element__info">
+              <h2 class="element__photo-name"></h2>
+              <button class="element__photo-heart"></button>
+            </div>
+          </div>
+        </template>
+      </main>
+      <footer class="footer">
+        <p class="footer__copyright">&#169; 2025 Carolina Bedoya</p>
+      </footer>
+    </div>
+    <script type="module" src="../scripts/index.js"></script>
+  </body>
+</html>

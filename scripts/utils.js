@@ -1,4 +1,4 @@
-// utils.js
+utils.js;
 
 // Función de validación (puedes personalizarla según tu necesidad)
 export function enableValidation(config) {

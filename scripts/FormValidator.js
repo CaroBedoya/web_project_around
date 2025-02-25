@@ -1,28 +1,58 @@
 export default class FormValidator {
-  constructor(selectors, formElement) {
-    this._selectors = selectors;
+  constructor(config, formElement) {
+    this._formSelector = config.formSelector;
+    this._inputSelector = config.inputSelector;
+    this._submitButtonSelector = ".popup__button";
+    this._inactiveButtonClass = config.inactiveButtonClass;
+    this._inputErrorClass = config.inputErrorClass;
+    this._errorClass = config.errorClass;
     this._formElement = formElement;
+
     this._inputList = Array.from(
-      this._formElement.querySelectorAll(this._selectors.inputSelector)
+      this._formElement.querySelectorAll(this._inputSelector)
     );
     this._buttonElement = this._formElement.querySelector(
-      this._selectors.submitButtonSelector
+      this._submitButtonSelector
     );
+
+    if (!this._buttonElement) {
+      console.error(
+        "❌ Error: No se encontró el botón de envío dentro del formulario.",
+        this._formElement
+      );
+    }
+    if (this._inputList.length === 0) {
+      console.error(
+        "❌ Error: No se encontraron inputs dentro del formulario.",
+        this._formElement
+      );
+    }
   }
 
-  enableValidation() {
-    this._setEventListeners();
+  _showInputError(inputElement, errorMessage) {
+    const errorElement = this._formElement.querySelector(
+      `#${inputElement.id}-error`
+    );
+    if (!errorElement) {
+      console.error(
+        "❌ Error: No se encontró el elemento de error para:",
+        inputElement.id
+      );
+      return;
+    }
+    inputElement.classList.add(this._inputErrorClass);
+    errorElement.textContent = errorMessage;
+    errorElement.classList.add(this._errorClass);
   }
 
-  _setEventListeners() {
-    this._toggleButtonState();
-
-    this._inputList.forEach((inputElement) => {
-      inputElement.addEventListener("input", () => {
-        this._checkInputValidity(inputElement);
-        this._toggleButtonState();
-      });
-    });
+  _hideInputError(inputElement) {
+    const errorElement = this._formElement.querySelector(
+      `#${inputElement.id}-error`
+    );
+    if (!errorElement) return;
+    inputElement.classList.remove(this._inputErrorClass);
+    errorElement.textContent = "";
+    errorElement.classList.remove(this._errorClass);
   }
 
   _checkInputValidity(inputElement) {
@@ -33,35 +63,44 @@ export default class FormValidator {
     }
   }
 
-  _toggleButtonState() {
-    if (this._hasInvalidInput()) {
-      this._buttonElement.classList.add(this._selectors.inactiveButtonClass);
-      this._buttonElement.disabled = true;
-    } else {
-      this._buttonElement.classList.remove(this._selectors.inactiveButtonClass);
-      this._buttonElement.disabled = false;
-    }
-  }
-
   _hasInvalidInput() {
     return this._inputList.some((inputElement) => !inputElement.validity.valid);
   }
 
-  _showInputError(inputElement, errorMessage) {
-    const errorElement = this._formElement.querySelector(
-      `#${inputElement.id}-error`
-    );
-    inputElement.classList.add(this._selectors.inputErrorClass);
-    errorElement.textContent = errorMessage;
-    errorElement.classList.add(this._selectors.errorClass);
+  _toggleButtonState() {
+    if (!this._buttonElement) return;
+    if (this._hasInvalidInput()) {
+      this._buttonElement.classList.add(this._inactiveButtonClass);
+      this._buttonElement.disabled = true;
+    } else {
+      this._buttonElement.classList.remove(this._inactiveButtonClass);
+      this._buttonElement.disabled = false;
+    }
   }
 
-  _hideInputError(inputElement) {
-    const errorElement = this._formElement.querySelector(
-      `#${inputElement.id}-error`
-    );
-    inputElement.classList.remove(this._selectors.inputErrorClass);
-    errorElement.classList.remove(this._selectors.errorClass);
-    errorElement.textContent = "";
+  _setEventListeners() {
+    this._inputList.forEach((inputElement) => {
+      inputElement.addEventListener("input", () => {
+        this._checkInputValidity(inputElement);
+        this._toggleButtonState();
+      });
+    });
+  }
+
+  enableValidation() {
+    if (!this._formElement) {
+      console.error("❌ Error: No se encontró el formulario.");
+      return;
+    }
+    this._formElement.addEventListener("submit", (evt) => evt.preventDefault());
+    this._setEventListeners();
+    this._toggleButtonState();
+  }
+
+  resetValidation() {
+    this._toggleButtonState();
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
   }
 }

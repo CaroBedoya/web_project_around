@@ -4,17 +4,23 @@
   "description": "Proyecto web usando HTML, CSS y JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
-    "url": "\u0016https://carobedoya.github.io/web_project_around/"
+    "url": "https://github.com/carobedoya/web_project_around.git"
   },
   "author": "Carolina Bedoya",
   "license": "ISC",
   "dependencies": {
     "jquery": "3.6.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gh-pages": "^5.0.0",
+    "parcel": "^2.13.3"
+  },
   "keywords": []
 }

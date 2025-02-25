@@ -21,7 +21,7 @@
 }
 
 .element__photo-delete {
-  background-image: url(../images/Trash.svg);
+  background-image: url(../src/images/Trash.svg);
   background-repeat: no-repeat;
   background-size: cover;
   background-color: transparent;
@@ -36,7 +36,7 @@
 }
 
 .element__photo-delete:hover {
-  background-image: url(../images/Trash-hover.svg);
+  background-image: url(../src/images/Trash-hover.svg);
 }
 
 .element__photo {
@@ -69,7 +69,7 @@
 }
 
 .element__photo-heart {
-  background-image: url(../images/heart_icon.svg);
+  background-image: url(../src/images/heart_icon.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-color: #ffffff;
@@ -83,7 +83,7 @@
 }
 
 .element__photo-heart_active {
-  background-image: url(../images/heart_active.svg);
+  background-image: url(../src/images/heart_active.svg);
 }
 
 @media screen and (max-width: 500px) {
