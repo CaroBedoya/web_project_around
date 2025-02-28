@@ -104,9 +104,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Evento para manejar el envío del formulario de editar perfil
   formProfile.addEventListener("submit", function (evt) {
     evt.preventDefault();
-    profileNameElem.textContent = inputName.value;
-    profileAboutElem.textContent = inputAbout.value;
-    profilePopup.close();
+    // Llama a la API para actualizar el perfil
+    api
+      .updateUserProfile(inputName.value, inputAbout.value)
+      .then((updatedData) => {
+        // Actualiza la interfaz con los datos recibidos del servidor
+        userInfo.setUserInfo({
+          name: updatedData.name,
+          about: updatedData.about,
+        });
+        profilePopup.close();
+      })
+      .catch((err) => console.error("Error al actualizar perfil:", err));
   });
 
   // Evento para manejar el envío del formulario de agregar tarjeta
@@ -115,11 +124,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const title = inputCardName.value;
     const url = inputLink.value;
     if (title && url) {
-      const newCard = createCard(url, title);
-      cardContainer.prepend(newCard);
-      inputCardName.value = "";
-      inputLink.value = "";
-      addCardPopup.close();
+      // Llama a la API para agregar una tarjeta
+      api
+        .addNewCard(title, url)
+        .then((cardData) => {
+          // Con los datos de la tarjeta retornados, crea el elemento de tarjeta
+          const newCard = createCard(cardData.link, cardData.name);
+          cardContainer.prepend(newCard);
+          inputCardName.value = "";
+          inputLink.value = "";
+          addCardPopup.close();
+        })
+        .catch((err) => console.error("Error al agregar tarjeta:", err));
     }
   });
 

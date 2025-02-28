@@ -16,14 +16,14 @@ class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-    }).then(this._checkResponse);
+    }).then((res) => this._checkResponse(res));
   }
 
   // 2. Obtener las tarjetas iniciales
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
-    }).then(this._checkResponse);
+    }).then((res) => this._checkResponse(res));
   }
 
   // 3. Actualizar el perfil del usuario
@@ -32,7 +32,7 @@ class Api {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({ name, about }),
-    }).then(this._checkResponse);
+    }).then((res) => this._checkResponse(res));
   }
 
   // 4. Agregar una nueva tarjeta
@@ -41,7 +41,7 @@ class Api {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({ name, link }),
-    }).then(this._checkResponse);
+    }).then((res) => this._checkResponse(res));
   }
 
   // 5. Eliminar una tarjeta
@@ -49,7 +49,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
-    }).then(this._checkResponse);
+    }).then((res) => this._checkResponse(res));
   }
 
   // 6. Alternar "me gusta" en una tarjeta (like / unlike)
@@ -57,7 +57,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: isLiked ? "DELETE" : "PUT",
       headers: this._headers,
-    }).then(this._checkResponse);
+    }).then((res) => this._checkResponse(res));
   }
 
   // 7. Actualizar el avatar del usuario
@@ -66,7 +66,7 @@ class Api {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({ avatar: avatarLink }),
-    }).then(this._checkResponse);
+    }).then((res) => this._checkResponse(res));
   }
 }
 
