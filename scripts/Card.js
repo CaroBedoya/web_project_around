@@ -3,14 +3,20 @@ export class Card {
     name,
     link,
     templateSelector,
-    handleCardClick,
-    handleDeleteClick
+    handleCardClick, // Callback para abrir imagen (agrandar)
+    handleDeleteClick, // Callback para eliminar la tarjeta (debe devolver una promesa)
+    handleLikeClick, // Callback para alternar "me gusta" (debe devolver una promesa con el nuevo estado)
+    isLiked, // Estado inicial del "like" (true o false)
+    cardId // Identificador de la tarjeta
   ) {
     this._name = name;
     this._link = link;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
-    this._handleDeleteClick = handleDeleteClick; // Nuevo callback para eliminar
+    this._handleDeleteClick = handleDeleteClick;
+    this._handleLikeClick = handleLikeClick;
+    this._isLiked = isLiked;
+    this._cardId = cardId;
   }
 
   _getTemplate() {
@@ -21,36 +27,61 @@ export class Card {
     return cardElement;
   }
 
-  _setEventListeners(cardElement) {
-    const btnLike = cardElement.querySelector(".element__photo-heart");
-    const btnDelete = cardElement.querySelector(".element__photo-delete");
-    const cardImage = cardElement.querySelector(".element__photo");
+  _setEventListeners() {
+    // Selecciona los elementos según el HTML:
+    this._btnLike = this._element.querySelector(".element__photo-heart");
+    this._btnDelete = this._element.querySelector(".element__photo-delete");
+    this._cardImage = this._element.querySelector(".element__photo");
 
-    // Toggle "like" al hacer clic
-    btnLike.addEventListener("click", () => {
-      btnLike.classList.toggle("element__photo-heart_active");
+    // Alternar "like" al hacer clic, comunicándose con la API
+    this._btnLike.addEventListener("click", () => this._toggleLike());
+
+    // Eliminar tarjeta al hacer clic, comunicándose con la API
+    this._btnDelete.addEventListener("click", () => {
+      this._handleDeleteClick(this._cardId)
+        .then(() => {
+          this._element.remove();
+        })
+        .catch((err) => console.error("Error al eliminar la tarjeta:", err));
     });
 
-    // Al hacer clic en el botón de eliminar, se llama al callback en vez de eliminar directamente
-    btnDelete.addEventListener("click", () => {
-      this._handleDeleteClick(cardElement);
-    });
-
-    // Al hacer clic en la imagen, se ejecuta el callback para agrandar la imagen
-    cardImage.addEventListener("click", () => {
+    // Agrandar imagen: llama al callback para abrir el popup de imagen
+    this._cardImage.addEventListener("click", () => {
       this._handleCardClick(this._link, this._name);
     });
   }
 
+  _toggleLike() {
+    this._handleLikeClick(this._cardId, this._isLiked)
+      .then((newState) => {
+        this._isLiked = newState; // Actualiza el estado según la respuesta de la API
+        this._updateLikeButton();
+      })
+      .catch((err) => console.error("Error al alternar 'me gusta':", err));
+  }
+
+  _updateLikeButton() {
+    if (this._isLiked) {
+      this._btnLike.classList.add("element__photo-heart_active");
+    } else {
+      this._btnLike.classList.remove("element__photo-heart_active");
+    }
+  }
+
   generateCard() {
     this._element = this._getTemplate();
+    // Configura la imagen y el nombre de la tarjeta
     const cardImage = this._element.querySelector(".element__photo");
     cardImage.src = this._link;
     cardImage.alt = this._name;
     this._element.querySelector(".element__photo-name").textContent =
       this._name;
 
-    this._setEventListeners(this._element);
+    // Primero asigna los event listeners (esto define _btnLike, _btnDelete, etc.)
+    this._setEventListeners();
+    // Luego actualiza visualmente el botón de "like" según el estado inicial
+    this._updateLikeButton();
+
     return this._element;
   }
 }

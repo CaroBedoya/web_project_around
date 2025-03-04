@@ -44,14 +44,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Instanciar popups
   const profilePopup = new PopupWithForm("#popup-profile", (data) => {
-    userInfo.setUserInfo({ name: data.name, about: data.about });
-    profilePopup.close();
+    api
+      .updateUserProfile(data.name, data.about)
+      .then((updatedData) => {
+        userInfo.setUserInfo({
+          name: updatedData.name,
+          about: updatedData.about,
+        });
+        profilePopup.close();
+      })
+      .catch((err) => console.error("Error al actualizar perfil:", err));
   });
+
   const addCardPopup = new PopupWithForm("#popup-add-card", (data) => {
-    const newCard = createCard(data.url, data.title);
-    cardContainer.prepend(newCard);
-    addCardPopup.close();
+    api
+      .addNewCard(data.title, data.url)
+      .then((cardData) => {
+        // Se asume que cardData retorna propiedades: name, link, _id, etc.
+        const newCard = createCard(
+          cardData.link,
+          cardData.name,
+          cardData._id,
+          false
+        );
+        cardContainer.prepend(newCard);
+        inputCardName.value = "";
+        inputLink.value = "";
+        addCardPopup.close();
+      })
+      .catch((err) => console.error("Error al agregar tarjeta:", err));
   });
+
   const showCardPopup = new PopupWithImage("#popup-image");
 
   // Obtener información del usuario desde la API
@@ -70,7 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           items: initialCards,
           renderer: (item) => {
-            const newCard = createCard(item.link, item.name);
+            // Se asume que cada tarjeta tiene: link, name, _id y opcionalmente isLiked (default false)
+            const newCard = createCard(
+              item.link,
+              item.name,
+              item._id,
+              item.isLiked || false
+            );
             section.addItem(newCard);
           },
         },
@@ -81,15 +110,31 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((err) => console.error("Error al obtener tarjetas iniciales:", err));
 
   // Función para crear una tarjeta (card)
-  function createCard(link, name) {
-    const card = new Card(name, link, ".template-card", (link, name) => {
-      showCardPopup.open(link, name);
-    });
+  function createCard(link, name, cardId, isLiked = false) {
+    const card = new Card(
+      name,
+      link,
+      ".template-card",
+      // Callback para agrandar la imagen
+      (link, name) => {
+        showCardPopup.open(link, name);
+      },
+      // Callback para eliminar la tarjeta (se comunica con la API)
+      (cardId) => {
+        return api.deleteCard(cardId);
+      },
+      // Callback para alternar "me gusta" (se comunica con la API)
+      (cardId, isLiked) => {
+        return api.toggleLike(cardId, isLiked);
+      },
+      isLiked, // Estado inicial del like
+      cardId // Identificador de la tarjeta
+    );
     return card.generateCard();
   }
 
   // Evento para abrir el popup de editar perfil
-  profileButton.addEventListener("click", function () {
+  profileButton.addEventListener("click", () => {
     const data = userInfo.getUserInfo();
     inputName.value = data.name;
     inputAbout.value = data.about;
@@ -97,46 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Evento para abrir el popup de agregar tarjeta
-  addButton.addEventListener("click", function () {
+  addButton.addEventListener("click", () => {
     addCardPopup.open();
-  });
-
-  // Evento para manejar el envío del formulario de editar perfil
-  formProfile.addEventListener("submit", function (evt) {
-    evt.preventDefault();
-    // Llama a la API para actualizar el perfil
-    api
-      .updateUserProfile(inputName.value, inputAbout.value)
-      .then((updatedData) => {
-        // Actualiza la interfaz con los datos recibidos del servidor
-        userInfo.setUserInfo({
-          name: updatedData.name,
-          about: updatedData.about,
-        });
-        profilePopup.close();
-      })
-      .catch((err) => console.error("Error al actualizar perfil:", err));
-  });
-
-  // Evento para manejar el envío del formulario de agregar tarjeta
-  formAddCard.addEventListener("submit", function (evt) {
-    evt.preventDefault();
-    const title = inputCardName.value;
-    const url = inputLink.value;
-    if (title && url) {
-      // Llama a la API para agregar una tarjeta
-      api
-        .addNewCard(title, url)
-        .then((cardData) => {
-          // Con los datos de la tarjeta retornados, crea el elemento de tarjeta
-          const newCard = createCard(cardData.link, cardData.name);
-          cardContainer.prepend(newCard);
-          inputCardName.value = "";
-          inputLink.value = "";
-          addCardPopup.close();
-        })
-        .catch((err) => console.error("Error al agregar tarjeta:", err));
-    }
   });
 
   // Cerrar popups al hacer click en el overlay
@@ -155,14 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", (evt) => {
       const popup = evt.target.closest(".popup");
       if (popup) {
-        if (popup.id === "popup-profile") {
-          profilePopup.close();
-        } else if (popup.id === "popup-add-card") {
-          addCardPopup.close();
-        } else if (popup.id === "popup-image") {
-          showCardPopup.close();
-        } else if (popup.id === "popup-confirm") {
-          // Lógica específica para popup de confirmación, si es necesario
+        if (popup.id === "popup-profile") profilePopup.close();
+        else if (popup.id === "popup-add-card") addCardPopup.close();
+        else if (popup.id === "popup-image") showCardPopup.close();
+        else if (popup.id === "popup-confirm") {
+          // Lógica para popup de confirmación, si es necesario
         }
       }
     });
